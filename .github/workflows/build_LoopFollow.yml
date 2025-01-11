@@ -17,13 +17,20 @@ jobs:
     uses: ./.github/workflows/validate_secrets.yml
     secrets: inherit
 
+  # First attempt to create certs (if they already exist, this has no effect)
+  create_certs:
+    name: Create certificates
+    needs: validate
+    uses: ./.github/workflows/create_certs.yml
+    secrets: inherit
+
   # Checks if Distribution certificate is present and valid, optionally nukes and
   # creates new certs if the repository variable ENABLE_NUKE_CERTS == 'true'
   check_certs:
-      name: Check certificates
-      needs: validate
-      uses: ./.github/workflows/check_certs.yml
-      secrets: inherit
+    name: Check certificates
+    needs: validate
+    uses: ./.github/workflows/check_certs.yml
+    secrets: inherit
 
   build:
     name: Build
