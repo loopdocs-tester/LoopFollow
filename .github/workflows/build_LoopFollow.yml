@@ -17,15 +17,17 @@ jobs:
     uses: ./.github/workflows/validate_secrets.yml
     secrets: inherit
 
-  # First attempt to create certs (if they already exist, this has no effect)
+  # This section handles certificate automatically when license agreements are signed
+  # and when variable ENABLE_NUKE_CERTS == 'true'
+  # First: attempt to create certs (if they already exist, this has no effect)
   create_certs:
     name: Create certificates
     needs: validate
     uses: ./.github/workflows/create_certs.yml
     secrets: inherit
 
-  # Checks if Distribution certificate is present and valid, optionally nukes and
-  # creates new certs if the repository variable ENABLE_NUKE_CERTS == 'true'
+  # Second: if no valid certs exist or were created, optionally nukes and
+  # creates new certs if variable ENABLE_NUKE_CERTS == 'true'
   check_certs:
     name: Check certificates
     needs: validate
